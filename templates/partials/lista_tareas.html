@@ -1,0 +1,46 @@
+<div id="lista-tareas">
+    {% if tareas %}
+        {% for tarea in tareas %}
+        <div class="card border-0 shadow-sm mb-2">
+            <div class="card-body d-flex align-items-center py-3">
+                <div class="form-check me-3">
+                    <input class="form-check-input" type="checkbox" 
+                           {% if tarea.completa %}checked{% endif %}
+                           hx-post="/toggle_tarea/{{ tarea.id }}"
+                           hx-target="#lista-tareas"
+                           hx-swap="outerHTML">
+                </div>
+                <span class="flex-grow-1 {% if tarea.completa %}text-decoration-line-through text-muted{% endif %}">
+                    {{ tarea.nombre }}
+                </span>
+                <button class="btn btn-outline-danger btn-sm border-0"
+                        hx-delete="/eliminar_tarea/{{ tarea.id }}"
+                        hx-target="#lista-tareas"
+                        hx-swap="outerHTML"
+                        hx-confirm="¿Estás seguro de eliminar esta tarea?">
+                    🗑️
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+        
+        <!-- Botón para eliminar todas las tareas -->
+        <div class="text-center mt-4">
+            <button class="btn btn-outline-warning btn-sm border-0"
+                    hx-delete="/eliminar_todas_las_tareas"
+                    hx-target="#lista-tareas"
+                    hx-swap="outerHTML"
+                    hx-confirm="¿Estás seguro de eliminar TODAS las tareas?">
+                🗑️ Eliminar todas
+            </button>
+        </div>
+    {% else %}
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-center text-muted py-5">
+                <div class="display-6 mb-3">📋</div>
+                <p class="mb-2">No hay tareas pendientes</p>
+                <small>¡Agrega tu primera tarea arriba!</small>
+            </div>
+        </div>
+    {% endif %}
+</div>
